@@ -8,6 +8,9 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
+    def get_file_path(self):
+        return self.__file_path
+
     def all(self):
         return self.__objects
 
@@ -31,15 +34,3 @@ class FileStorage:
                         self.__objects[key] = instance
         except FileNotFoundError:
             pass
-
-    #def reload(self):
-    #    try:
-    #        with open(self.__file_path, 'r') as file:
-    #            loaded_objects = json.load(file)
-    #            for key, obj_dict in loaded_objects.items():
-    #                class_name, obj_id = key.split('.')
-    #                # Implement logic to recreate instances from obj_dict
-    #                # Example: new_instance = BaseModel(**obj_dict)
-    #                self.__objects[key] = new_instance
-    #    except FileNotFoundError:
-    #        pass
