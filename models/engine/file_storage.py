@@ -8,8 +8,6 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
-    def get_file_path(self):
-        return self.__file_path
 
     def all(self):
         return self.__objects
