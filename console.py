@@ -14,11 +14,9 @@ class HBNBCommand(cmd.Cmd):
         """To exit the program using EOF \n"""
         return True
 
-    def emptyine(self):
-        """Do nothing on empty line"""
-        if self.lastcmd:
-            self.lastcmd = ""
-            return self.onecmd('\n')
+    def emptyline(self):
+        """Called when an empty line is entered"""
+        pass
 
 
 if __name__ == "__main__":
