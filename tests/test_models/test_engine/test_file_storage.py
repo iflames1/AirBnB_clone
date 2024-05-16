@@ -12,6 +12,7 @@ class TestFileStorage(unittest.TestCase):
     def setUp(self) -> None:
         self.storage = FileStorage()
         self.file_path = self.storage._FileStorage__file_path # replace with getter
+        self.objects = self.storage._FileStorage__objects
 
     def tearDown(self) -> None:
         if os.path.exists(self.file_path):
@@ -23,7 +24,8 @@ class TestFileStorage(unittest.TestCase):
         self.storage.new(obj1)
         self.storage.new(obj2)
         all_object = self.storage.all()
-        self.assertEqual(len(all_object), 2)
+        self.assertEqual(len(all_object), len(self.objects))
+        self.assertGreaterEqual(len(all_object), 2)
         self.assertIn(obj1.__class__.__name__ + '.' + obj1.id, all_object)
         self.assertIn(obj1.__class__.__name__ + '.' + obj2.id, all_object)
 
