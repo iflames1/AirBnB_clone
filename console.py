@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import cmd
+import re
 from models.base_model import BaseModel
 from models import storage
 from models.user import User
@@ -13,13 +14,45 @@ from models.review import Review
 
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
-    CLASSES = {"BaseModel": BaseModel,
-               "User": User,
-               "Place": Place,
-               "State": State,
-               "City": City,
-               "Amenity": Amenity,
-               "Review": Review}
+    CLASSES = {
+        "BaseModel": BaseModel,
+        "User": User,
+        "Place": Place,
+        "State": State,
+        "City": City,
+        "Amenity": Amenity,
+        "Review": Review
+    }
+
+    def default(self, line: str) -> None:
+        method_mapping = {
+            "all": self.do_all,
+            "count": self.do_count,
+            "show": self.do_show,
+            "destroy": self.do_destroy,
+            "update": self.do_update,
+        }
+        match = re.match(r"(\w+)\.(\w+)\((.*)\)", line)
+        if match:
+            class_name, method_name, args = match.groups()
+            if class_name in self.CLASSES and method_name in method_mapping:
+                method = method_mapping[method_name]
+                method(f"{class_name} {args}".strip())
+            else:
+                print("** class doesn't exist **" if class_name not in self.CLASSES else "*** Unknown syntax:", line)
+        else:
+            print("*** Unknown syntax:", line)
+
+    def do_count(self, arg):
+        if not arg:
+            print("** class name missing **")
+            return
+        class_name = arg.split()[0]
+        if class_name in self.CLASSES:
+            count = sum(1 for key in storage.all().keys() if key.startswith(class_name + "."))
+            print(count)
+        else:
+            print("** class doesn't exist **")
 
     def do_all(self, arg):
         obj_list = []
