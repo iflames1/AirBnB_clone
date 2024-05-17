@@ -27,19 +27,39 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             return
         args = arg.split()
-        if args[0] not in self.CLASSES:
+        class_name = args[0]
+        if class_name not in self.CLASSES:
             print("** class doesn't exist **")
             return
         if len(args) < 2:
             print("** instance id missing **")
             return
-        key = args[0] + '.' + args[1]
+        key = class_name + '.' + args[1]
         obj_dict = storage.all()
         if key in obj_dict:
             print(obj_dict[key])
         else:
             print("** no instance found **")
 
+    def do_destroy(self, arg):
+        if not arg:
+            print("** class name missing **")
+            return
+        args = arg.split()
+        class_name = args[0]
+        if class_name not in self.CLASSES:
+            print("** class doesn't exist **")
+            return
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
+        key = class_name + '.' + args[1]
+        obj_dict = storage.all()
+        if key not in obj_dict:
+            print("** no instance found **")
+            return
+        del obj_dict[key]
+        storage.save()
 
     def do_quit(self, arg):
         """Quit command to exit the program \n"""
