@@ -2,6 +2,7 @@
 
 import cmd
 import re
+import shlex
 from models.base_model import BaseModel
 from models import storage
 from models.user import User
@@ -124,7 +125,12 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
 
     def do_update(self, arg):
-        args = arg.split()
+        try:
+            args = shlex.split(arg)
+        except ValueError:
+            print("** value error **")
+            return
+
         if len(args) < 4:
             if len(args) == 0:
                 print("** class name missing **")
@@ -142,7 +148,7 @@ class HBNBCommand(cmd.Cmd):
             return
         obj_id = args[1].strip('"\'')
         obj_attr = args[2]
-        obj_value = args[3]
+        obj_value = args[3].strip('"\'')
 
         obj_dict = storage.all()
         obj_key = f"{class_name}.{obj_id}"
