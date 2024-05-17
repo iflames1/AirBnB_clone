@@ -9,6 +9,22 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
     CLASSES = {"BaseModel": BaseModel}
 
+    def do_all(self, arg):
+        obj_list = []
+        if arg:
+            class_name = arg.split()[0]
+            if class_name not in self.CLASSES:
+                print("** class doesn't exist **")
+                return
+            obj_dict = storage.all()
+            for key, value in obj_dict.items():
+                if class_name == key.split('.')[0]:
+                    obj_list.append(str(value))
+        else:
+            obj_dict = storage.all()
+            for value in obj_dict.values():
+                obj_list.append(str(value))
+        print(obj_list)
 
     def do_create(self, arg):
         if not arg:
