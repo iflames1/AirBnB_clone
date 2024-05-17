@@ -35,6 +35,7 @@ class HBNBCommand(cmd.Cmd):
         match = re.match(r"(\w+)\.(\w+)\((.*)\)", line)
         if match:
             class_name, method_name, args = match.groups()
+            args = args.strip('"\'')
             if class_name in self.CLASSES and method_name in method_mapping:
                 method = method_mapping[method_name]
                 method(f"{class_name} {args}".strip())
@@ -95,7 +96,7 @@ class HBNBCommand(cmd.Cmd):
         if len(args) < 2:
             print("** instance id missing **")
             return
-        key = class_name + '.' + args[1]
+        key = class_name + '.' + args[1].strip('"\'')
         obj_dict = storage.all()
         if key in obj_dict:
             print(obj_dict[key])
@@ -114,7 +115,7 @@ class HBNBCommand(cmd.Cmd):
         if len(args) < 2:
             print("** instance id missing **")
             return
-        key = class_name + '.' + args[1]
+        key = class_name + '.' + args[1].strip('"\'')
         obj_dict = storage.all()
         if key not in obj_dict:
             print("** no instance found **")
@@ -139,7 +140,7 @@ class HBNBCommand(cmd.Cmd):
         if class_name not in self.CLASSES:
             print("** class doesn't exist **")
             return
-        obj_id = args[1]
+        obj_id = args[1].strip('"\'')
         obj_attr = args[2]
         obj_value = args[3]
 
