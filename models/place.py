@@ -7,8 +7,8 @@ from models.user import User
 class Place(BaseModel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.city_id = City.id
-        self.user_id = User.id
+        self.city_id = "" #City.id
+        self.user_id = "" #User.id
         self.name = ""
         self.description = ""
         self.number_rooms = 0
