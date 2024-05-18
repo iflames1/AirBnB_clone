@@ -41,7 +41,8 @@ class HBNBCommand(cmd.Cmd):
                 method = method_mapping[method_name]
                 method(f"{class_name} {args}".strip())
             else:
-                print("** class doesn't exist **" if class_name not in self.CLASSES else "*** Unknown syntax:", line)
+                print("** class doesn't exist **" if class_name
+                      not in self.CLASSES else "*** Unknown syntax:", line)
         else:
             print("*** Unknown syntax:", line)
 
@@ -51,7 +52,8 @@ class HBNBCommand(cmd.Cmd):
             return
         class_name = arg.split()[0]
         if class_name in self.CLASSES:
-            count = sum(1 for key in storage.all().keys() if key.startswith(class_name + "."))
+            count = sum(1 for key in storage.all().keys()
+                        if key.startswith(class_name + "."))
             print(count)
         else:
             print("** class doesn't exist **")
