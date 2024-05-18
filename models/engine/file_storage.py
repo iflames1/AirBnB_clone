@@ -90,11 +90,12 @@ class FileStorage:
         """
         try:
             with open(self.__file_path, 'r') as file:
+
                 loaded_objects = json.load(file)
                 for key, value in loaded_objects.items():
                     class_name = value["__class__"]
                     if class_name in self.CLASSES:
                         instance = self.CLASSES[class_name](**value)
                         self.__objects[key] = instance
-        except FileNotFoundError:
+        except (FileNotFoundError, json.JSONDecodeError):
             pass
