@@ -15,6 +15,9 @@ class TestUser(unittest.TestCase):
 
     def test_attributes(self):
         self.assertEqual(self.amenity.name, "Isaac")
+        self.assertIsNotNone(self.amenity.created_at)
+        self.assertIsNotNone(self.amenity.updated_at)
+        self.assertIsNotNone(self.amenity.id)
 
 if __name__ == "__main__":
     unittest.main()

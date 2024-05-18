@@ -20,20 +20,7 @@ class User(BaseModel):
         last_name (str): The user's last name.
     """
 
-    def __init__(self, *args, **kwargs):
-        """
-        Initializes a new instance of the User class with optional arguments
-        provided in kwargs.
-
-        Parameters:
-            *args (tuple): Variable length argument list.
-            **kwargs (dict): Arbitrary keyword arguments.
-
-        Returns:
-            None
-        """
-        super().__init__(*args, **kwargs)
-        self.email = ""
-        self.password = ""
-        self.first_name = ""
-        self.last_name = ""
+    email = ""
+    password = ""
+    first_name = ""
+    last_name = ""

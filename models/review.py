@@ -15,19 +15,7 @@ class Review(BaseModel):
         user_id (str): The ID of the user who left the review.
         text (str): The text of the review.
     """
-    def __init__(self, *args, **kwargs):
-        """
-        Initializes a new instance of the class with optional arguments
-        provided in kwargs.
 
-        Parameters:
-            *args: Variable length argument list.
-            **kwargs: Arbitrary keyword arguments.
-
-        Returns:
-            None
-        """
-        super().__init__(*args, **kwargs)
-        self.place_id = ""
-        self.user_id = ""
-        self.text = ""
+    place_id = ""
+    user_id = ""
+    text = ""
