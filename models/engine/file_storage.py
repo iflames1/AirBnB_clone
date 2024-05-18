@@ -1,14 +1,4 @@
 #!/usr/bin/python3
-
-import json
-from models.base_model import BaseModel
-from models.user import User
-from models.place import Place
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.review import Review
-
 """
 The `FileStorage` class is responsible for managing the persistence of objects
 in a JSON file. It provides methods to create, retrieve, update, and delete
@@ -36,6 +26,15 @@ The `reload()` method loads the object data from the JSON file specified by the
 `__file_path` attribute and instantiates the appropriate objects based on the
 class names stored in the file.
 """
+
+import json
+from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 
 class FileStorage:
