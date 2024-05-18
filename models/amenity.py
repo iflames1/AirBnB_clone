@@ -14,17 +14,4 @@ class Amenity(BaseModel):
     Attributes:
         name (str): The name of the amenity.
     """
-    def __init__(self, *args, **kwargs):
-        """
-        Initializes a new instance of the class with optional arguments
-        provided in kwargs.
-
-        Parameters:
-            *args: Variable length argument list.
-            **kwargs: Arbitrary keyword arguments.
-
-        Returns:
-            None
-        """
-        super().__init__(*args, **kwargs)
-        self.name = ""
+    name = ""
