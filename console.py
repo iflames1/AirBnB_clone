@@ -179,6 +179,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, arg):
         """To exit the program using EOF \n"""
+        print()
         return True
 
     def emptyine(self):

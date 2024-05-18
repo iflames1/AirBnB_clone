@@ -1,0 +1,2 @@
+User.count()
+User.destroy("cdcfba2a-8a6f-4eae-b2ff-c098bf128680")
