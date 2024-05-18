@@ -303,8 +303,8 @@ class HBNBCommand(cmd.Cmd):
         print()
         return True
 
-    def emptyine(self):
-        """Do nothing on empty line"""
+    def emptyline(self):
+        """Do nothing on empty input line."""
         pass
 
 
