@@ -275,6 +275,23 @@ class TestHBNBCommand(unittest.TestCase):
                     if key.startswith("User" + "."))
         self.assertEqual(output, str(count))
 
+    def test_count_v2(self):
+        """Test count command"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("create User")
+            user_id1 = f.getvalue().strip()
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("create User")
+            user_id2 = f.getvalue().strip()
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("User.count()")
+            output = f.getvalue().strip()
+        count = sum(1 for key in storage.all().keys()
+                    if key.startswith("User" + "."))
+        self.assertEqual(output, str(count))
+
     def test_count_missing_class(self):
         """Test count command with invalid class name"""
         with patch('sys.stdout', new=StringIO()) as f:
@@ -286,6 +303,13 @@ class TestHBNBCommand(unittest.TestCase):
         """Test count command with invalid class name"""
         with patch('sys.stdout', new=StringIO()) as f:
             self.console.onecmd("count NonExistentClass")
+            output = f.getvalue().strip()
+        self.assertEqual(output, "** class doesn't exist **")
+
+    def test_count_invalid_class_v2(self):
+        """Test count command with invalid class name"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("NonExistentClass.count()")
             output = f.getvalue().strip()
         self.assertEqual(output, "** class doesn't exist **")
 

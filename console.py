@@ -112,6 +112,7 @@ class HBNBCommand(cmd.Cmd):
         Retrieves all instances of a specific class from the storage system
         and prints them as a list.
         Usage: all (optional: <class name>)
+            <class name>.all()
 
         Parameters:
             arg (str): The name of the class to retrieve instances of. If not
