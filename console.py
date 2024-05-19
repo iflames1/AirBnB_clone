@@ -68,6 +68,7 @@ class HBNBCommand(cmd.Cmd):
             "show": self.do_show,
             "destroy": self.do_destroy,
             "update": self.do_update,
+            "create": self.do_create
         }
         match = re.match(r"(\w+)\.(\w+)\((.*)\)", line)
         if match:
@@ -78,7 +79,7 @@ class HBNBCommand(cmd.Cmd):
                 method(f"{class_name} {args}".strip())
             else:
                 print("** class doesn't exist **" if class_name
-                      not in self.CLASSES else "*** Unknown syntax:", line)
+                                                     not in self.CLASSES else "*** Unknown syntax:", line)
         else:
             print("*** Unknown syntax:", line)
 
@@ -86,6 +87,8 @@ class HBNBCommand(cmd.Cmd):
         """
         Counts the number of instances of a specific class that are stored in
         the storage system.
+        Usage: count <class name>
+            <class name>.count()
 
         Parameters:
             arg (str): The name of the class to count the instances of.
@@ -108,6 +111,7 @@ class HBNBCommand(cmd.Cmd):
         """
         Retrieves all instances of a specific class from the storage system
         and prints them as a list.
+        Usage: all (optional: <class name>)
 
         Parameters:
             arg (str): The name of the class to retrieve instances of. If not
@@ -138,6 +142,7 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, arg):
         """
         Creates a new instance of a class and saves it to the storage system.
+        Usage: create <class name>
 
         Parameters:
             arg (str): The name of the class to create an instance of.
@@ -149,7 +154,7 @@ class HBNBCommand(cmd.Cmd):
             None
         """
         if not arg:
-            print("** class doesn't exist **")
+            print("** class name missing **")
             return
         class_name = arg.split()[0]
         if class_name in self.CLASSES:
@@ -162,7 +167,7 @@ class HBNBCommand(cmd.Cmd):
     def do_show(self, arg):
         """
         Displays the details of an instance of a class.
-
+        Usage: show <class name> <id>
         Parameters:
             arg (str): The name of the class followed by the instance ID
             separated by a space.
@@ -194,6 +199,7 @@ class HBNBCommand(cmd.Cmd):
     def do_destroy(self, arg):
         """
         Deletes an instance of a class from storage.
+        Usage: destroy <class name> <id>
 
         Parameters:
             arg (str): The name of the class followed by the instance ID
@@ -228,6 +234,8 @@ class HBNBCommand(cmd.Cmd):
         """
         Updates an attribute of an instance of a class in storage.
 
+        Usage: update <class name> <id> <attribute name> "<attribute value>"
+
         Parameters:
             arg (str): The name of the class followed by the instance ID,
             attribute name, and new value separated by spaces.
@@ -252,11 +260,17 @@ class HBNBCommand(cmd.Cmd):
             print("** value error **")
             return
 
+        obj_dict = storage.all()
+        re_quote = '"\''
         if len(args) < 4:
             if len(args) == 0:
                 print("** class name missing **")
+            elif args[0] not in self.CLASSES:
+                print("** class doesn't exist **")
             elif len(args) == 1:
                 print("** instance id missing **")
+            elif f"{args[0]}.{args[1].strip(re_quote)}" not in obj_dict:
+                print("** no instance found **")
             elif len(args) == 2:
                 print("** attribute name missing **")
             elif len(args) == 3:
@@ -264,18 +278,12 @@ class HBNBCommand(cmd.Cmd):
             return
 
         class_name = args[0]
-        if class_name not in self.CLASSES:
-            print("** class doesn't exist **")
-            return
         obj_id = args[1].strip('"\'')
         obj_attr = args[2]
         obj_value = args[3].strip('"\'')
 
         obj_dict = storage.all()
         obj_key = f"{class_name}.{obj_id}"
-        if obj_key not in obj_dict:
-            print("** no instance found **")
-            return
 
         obj = obj_dict[obj_key]
         if hasattr(obj, obj_attr):
