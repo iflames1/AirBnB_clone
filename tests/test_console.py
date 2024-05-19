@@ -320,7 +320,8 @@ class TestHBNBCommand(unittest.TestCase):
             user_id = f.getvalue().strip()
 
         with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd('User.update("{}", "first_name", "John")'.format(user_id))
+            self.console.onecmd('User.update("{}", "first_name", "John")'
+                                .format(user_id))
             output = f.getvalue().strip()
         self.assertEqual(output, "")
 
@@ -336,7 +337,9 @@ class TestHBNBCommand(unittest.TestCase):
             user_id = f.getvalue().strip()
 
         with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd('User.update("{}", {{"first_name": "John", "age": 30}})'.format(user_id))
+            self.console.onecmd('User.update("{}", '
+                                '{{"first_name": "John", "age": 30}})'
+                                .format(user_id))
             output = f.getvalue().strip()
         self.assertEqual(output, "")
 
