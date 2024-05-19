@@ -24,6 +24,7 @@ The `do_quit` and `do_EOF` methods are used to exit the CLI application.
 import cmd
 import re
 import shlex
+from datetime import datetime
 from models.base_model import BaseModel
 from models import storage
 from models.user import User
@@ -73,7 +74,6 @@ class HBNBCommand(cmd.Cmd):
         match = re.match(r"(\w+)\.(\w+)\((.*)\)", line)
         if match:
             class_name, method_name, args = match.groups()
-            args = args.strip('"\'')
             if class_name in self.CLASSES and method_name in method_mapping:
                 method = method_mapping[method_name]
                 method(f"{class_name} {args}".strip())
@@ -255,52 +255,98 @@ class HBNBCommand(cmd.Cmd):
             ValueError: If the attribute does not exist.
             ValueError: If the value is of an invalid type.
         """
+        global obj_id
         try:
             args = shlex.split(arg)
         except ValueError:
             print("** value error **")
             return
 
-        obj_dict = storage.all()
-        re_quote = '"\''
-        if len(args) < 4:
-            if len(args) == 0:
-                print("** class name missing **")
-            elif args[0] not in self.CLASSES:
-                print("** class doesn't exist **")
-            elif len(args) == 1:
-                print("** instance id missing **")
-            elif f"{args[0]}.{args[1].strip(re_quote)}" not in obj_dict:
-                print("** no instance found **")
-            elif len(args) == 2:
-                print("** attribute name missing **")
-            elif len(args) == 3:
-                print("** value missing **")
+        if len(args) == 0:
+            print("** class name missing **")
             return
 
-        class_name = args[0]
-        obj_id = args[1].strip('"\'')
-        obj_attr = args[2]
-        obj_value = args[3].strip('"\'')
+        if len(args) == 1:
+            print("** instance id missing **")
+            return
 
+        match = re.search(r'\{.*\}', arg)
         obj_dict = storage.all()
-        obj_key = f"{class_name}.{obj_id}"
+        obj_id = re.sub(r'[",]', '', args[1])
 
-        obj = obj_dict[obj_key]
-        if hasattr(obj, obj_attr):
-            attr_type = type(getattr(obj, obj_attr))
-            try:
-                obj_value = attr_type(obj_value)
-            except ValueError:
-                print("** invalid value type **")
+        if match:
+            extracted_dict_str = match.group(0)
+            dict_update = eval(extracted_dict_str)
+
+            if len(args) < 3:
+                if args[0] not in self.CLASSES:
+                    print("** class doesn't exist **")
+                elif f"{args[0]}.{obj_id}" not in obj_dict:
+                    print("** no instance found **")
                 return
-        else:
-            try:
-                obj_value = eval(obj_value)
-            except (NameError, SyntaxError):
-                pass
 
-        setattr(obj, obj_attr, obj_value)
+            class_name = args[0]
+            obj_key = f"{class_name}.{obj_id}"
+            obj = obj_dict[obj_key]
+
+            for attr, value in dict_update.items():
+                if hasattr(obj, attr):
+                    attr_type = type(getattr(obj, attr))
+                    try:
+                        value = attr_type(value)
+                    except ValueError:
+                        print("** invalid value type **")
+                        continue
+                else:
+                    try:
+                        if isinstance(value, str):
+                            value = eval(value)
+                        elif isinstance(value, (int, float, bool)):
+                            pass
+                        elif isinstance(value, (list, dict)):
+                            value = eval(str(value))
+                        else:
+                            print("** invalid value type **")
+                            continue
+                    except (NameError, SyntaxError):
+                        pass
+                setattr(obj, attr, value)
+            obj.updated_at = datetime.now()
+            storage.save()
+
+        else:
+            if len(args) < 4:
+                if args[0] not in self.CLASSES:
+                    print("** class doesn't exist **")
+                elif f"{args[0]}.{obj_id}" not in obj_dict:
+                    print("** no instance found **")
+                elif len(args) == 2:
+                    print("** attribute name missing **")
+                elif len(args) == 3:
+                    print("** value missing **")
+                return
+
+            class_name = args[0]
+            obj_attr = re.sub(r'[",]', '', args[2])
+            obj_value = re.sub(r'[",]', '', args[3])
+
+            obj_key = f"{class_name}.{obj_id}"
+            obj = obj_dict[obj_key]
+            if hasattr(obj, obj_attr):
+                attr_type = type(getattr(obj, obj_attr))
+                try:
+                    obj_value = attr_type(obj_value)
+                except ValueError:
+                    print("** invalid value type **")
+                    return
+            else:
+                try:
+                    obj_value = eval(obj_value)
+                except (NameError, SyntaxError):
+                    pass
+            setattr(obj, obj_attr, obj_value)
+        obj.updated_at = datetime.now()
+        obj.save()
         storage.save()
 
     def do_quit(self, arg):
