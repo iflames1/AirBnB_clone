@@ -38,6 +38,17 @@ class TestHBNBCommand(unittest.TestCase):
             output = f.getvalue().strip()
         self.assertIn(user_id, output)
 
+    def test_all_v2(self):
+        """Test all command"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("create User")
+            user_id = f.getvalue().strip()
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("User.all()")
+            output = f.getvalue().strip()
+        self.assertIn(user_id, output)
+
     def test_all_invalid_class(self):
         """Test all command with invalid class name"""
         with patch('sys.stdout', new=StringIO()) as f:
@@ -45,6 +56,13 @@ class TestHBNBCommand(unittest.TestCase):
             output = f.getvalue().strip()
         self.assertEqual(output, "** class doesn't exist **")
 
+    def test_all_invalid_class_v2(self):
+        """Test all command with invalid class name"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("NonExistentClass.all()")
+            output = f.getvalue().strip()
+        self.assertEqual(output, "** class doesn't exist **")
+        
     def test_create(self):
         """Test create command"""
         with patch('sys.stdout', new=StringIO()) as f:

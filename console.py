@@ -79,7 +79,7 @@ class HBNBCommand(cmd.Cmd):
                 method(f"{class_name} {args}".strip())
             else:
                 print("** class doesn't exist **" if class_name not in
-                      self.CLASSES else "*** Unknown syntax:", line)
+                      self.CLASSES else "*** Unknown syntax **")
         else:
             print("*** Unknown syntax:", line)
 
