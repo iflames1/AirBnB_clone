@@ -345,7 +345,6 @@ class HBNBCommand(cmd.Cmd):
                 except (NameError, SyntaxError):
                     pass
             setattr(obj, obj_attr, obj_value)
-        obj.updated_at = datetime.now()
         obj.save()
         storage.save()
 
