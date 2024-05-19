@@ -62,7 +62,7 @@ class TestHBNBCommand(unittest.TestCase):
             self.console.onecmd("NonExistentClass.all()")
             output = f.getvalue().strip()
         self.assertEqual(output, "** class doesn't exist **")
-        
+
     def test_create(self):
         """Test create command"""
         with patch('sys.stdout', new=StringIO()) as f:
