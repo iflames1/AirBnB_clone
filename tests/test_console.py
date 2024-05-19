@@ -242,94 +242,6 @@ class TestHBNBCommand(unittest.TestCase):
             output = f.getvalue().strip()
         self.assertEqual(output, "** no instance found **")
 
-    def test_update(self):
-        """Test update command"""
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd("create User")
-            user_id = f.getvalue().strip()
-
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd(f'update User {user_id} first_name "John"')
-            output = f.getvalue().strip()
-        self.assertEqual(output, "")
-
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd(f"show User {user_id}")
-            output = f.getvalue().strip()
-        self.assertIn("'first_name': 'John'", output)
-
-    """
-    def test_update_dict(self):
-        # Test update command with a dictionary
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd("create User")
-            user_id = f.getvalue().strip()
-
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd(f'update User {user_id} '\
-            '{{"first_name": "John", "age": 30}}')
-            output = f.getvalue().strip()
-        self.assertEqual(output, "")
-
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd(f"show User {user_id}")
-            output = f.getvalue().strip()
-        self.assertIn("'first_name': 'John'", output)
-        self.assertIn("'age': 30", output)
-    """
-
-    def test_update_missing_class(self):
-        """Test update command with missing class name"""
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd("update")
-            output = f.getvalue().strip()
-        self.assertEqual(output, "** class name missing **")
-
-    def test_update_invalid_class(self):
-        """Test update command with invalid class name"""
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd("update NonExistentClass 1234")
-            output = f.getvalue().strip()
-        self.assertEqual(output, "** class doesn't exist **")
-
-    def test_update_missing_id(self):
-        """Test update command with missing instance id"""
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd("update User")
-            output = f.getvalue().strip()
-        self.assertEqual(output, "** instance id missing **")
-
-    def test_update_no_instance(self):
-        """Test update command with non-existing instance id"""
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd("update User 1234")
-            output = f.getvalue().strip()
-        self.assertEqual(output, "** no instance found **")
-
-    def test_update_missing_attr_name(self):
-        """Test update command with missing attribute name"""
-        # create a User
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd("create User")
-            user_id = f.getvalue().strip()
-
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd(f"update User {user_id}")
-            output = f.getvalue().strip()
-        self.assertEqual(output, "** attribute name missing **")
-
-    def test_update_missing_value(self):
-        """Test update command with missing value"""
-        # create a User
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd("create User")
-            user_id = f.getvalue().strip()
-
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd(f"update User {user_id} first_name")
-            output = f.getvalue().strip()
-        self.assertEqual(output, "** value missing **")
-
     def test_count(self):
         """Test count command"""
         with patch('sys.stdout', new=StringIO()) as f:
@@ -384,6 +296,107 @@ class TestHBNBCommand(unittest.TestCase):
             self.console.onecmd("NonExistentClass.count()")
             output = f.getvalue().strip()
         self.assertEqual(output, "** class doesn't exist **")
+
+    def test_update(self):
+        """Test update command"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("create User")
+            user_id = f.getvalue().strip()
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd(f'update User {user_id} first_name "John"')
+            output = f.getvalue().strip()
+        self.assertEqual(output, "")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd(f"show User {user_id}")
+            output = f.getvalue().strip()
+        self.assertIn("'first_name': 'John'", output)
+
+    def test_update_v2(self):
+        """Test update command"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("create User")
+            user_id = f.getvalue().strip()
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd('User.update("{}", "first_name", "John")'.format(user_id))
+            output = f.getvalue().strip()
+        self.assertEqual(output, "")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd(f"show User {user_id}")
+            output = f.getvalue().strip()
+        self.assertIn("'first_name': 'John'", output)
+
+    def test_update_dict(self):
+        """Test update command with a dictionary"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("create User")
+            user_id = f.getvalue().strip()
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd('User.update("{}", {{"first_name": "John", "age": 30}})'.format(user_id))
+            output = f.getvalue().strip()
+        self.assertEqual(output, "")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd(f"show User {user_id}")
+            output = f.getvalue().strip()
+        self.assertIn("'first_name': 'John'", output)
+        self.assertIn("'age': 30", output)
+
+    def test_update_missing_class(self):
+        """Test update command with missing class name"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("update")
+            output = f.getvalue().strip()
+        self.assertEqual(output, "** class name missing **")
+
+    def test_update_invalid_class(self):
+        """Test update command with invalid class name"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("update NonExistentClass 1234")
+            output = f.getvalue().strip()
+        self.assertEqual(output, "** class doesn't exist **")
+
+    def test_update_missing_id(self):
+        """Test update command with missing instance id"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("update User")
+            output = f.getvalue().strip()
+        self.assertEqual(output, "** instance id missing **")
+
+    def test_update_no_instance(self):
+        """Test update command with non-existing instance id"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("update User 1234")
+            output = f.getvalue().strip()
+        self.assertEqual(output, "** no instance found **")
+
+    def test_update_missing_attr_name(self):
+        """Test update command with missing attribute name"""
+        # create a User
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("create User")
+            user_id = f.getvalue().strip()
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd(f"update User {user_id}")
+            output = f.getvalue().strip()
+        self.assertEqual(output, "** attribute name missing **")
+
+    def test_update_missing_value(self):
+        """Test update command with missing value"""
+        # create a User
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("create User")
+            user_id = f.getvalue().strip()
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd(f"update User {user_id} first_name")
+            output = f.getvalue().strip()
+        self.assertEqual(output, "** value missing **")
 
 
 if __name__ == "__main__":
