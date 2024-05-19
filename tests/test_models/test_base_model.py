@@ -35,7 +35,8 @@ class TestBaseModel(unittest.TestCase):
         previous_updated_at = self.base_model.updated_at
         self.base_model.save()
         self.assertNotEqual(previous_updated_at, self.base_model.updated_at)
-        self.assertLessEqual(self.base_model.created_at, self.base_model.updated_at)
+        self.assertLessEqual(self.base_model.created_at,
+                             self.base_model.updated_at)
 
     def test_to_dict_method(self):
         obj_dict = self.base_model.to_dict()
@@ -43,8 +44,10 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(obj_dict, dict)
         self.assertEqual(obj_dict["__class__"], "BaseModel")
         self.assertEqual(obj_dict["id"], self.base_model.id)
-        self.assertEqual(obj_dict["created_at"], self.base_model.created_at.isoformat())
-        self.assertEqual(obj_dict["updated_at"], self.base_model.updated_at.isoformat())
+        self.assertEqual(obj_dict["created_at"],
+                         self.base_model.created_at.isoformat())
+        self.assertEqual(obj_dict["updated_at"],
+                         self.base_model.updated_at.isoformat())
         self.assertEqual(obj_dict["name"], self.base_model.name)
         self.assertEqual(obj_dict["my_number"], self.base_model.my_number)
 
@@ -61,7 +64,8 @@ class TestBaseModel(unittest.TestCase):
 
     def test_str_method(self):
         obj_str = str(self.base_model)
-        expected_str = f"[BaseModel] ({self.base_model.id}) {self.base_model.__dict__}"
+        expected_str = f"[BaseModel] ({self.base_model.id}) "\
+                       "{self.base_model.__dict__}"
         self.assertEqual(obj_str, expected_str)
 
 

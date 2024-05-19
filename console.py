@@ -78,8 +78,8 @@ class HBNBCommand(cmd.Cmd):
                 method = method_mapping[method_name]
                 method(f"{class_name} {args}".strip())
             else:
-                print("** class doesn't exist **" if class_name
-                                                     not in self.CLASSES else "*** Unknown syntax:", line)
+                print("** class doesn't exist **" if class_name not in
+                      self.CLASSES else "*** Unknown syntax:", line)
         else:
             print("*** Unknown syntax:", line)
 

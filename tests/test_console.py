@@ -176,7 +176,8 @@ class TestHBNBCommand(unittest.TestCase):
             user_id = f.getvalue().strip()
 
         with patch('sys.stdout', new=StringIO()) as f:
-            self.console.onecmd(f'update User {user_id} {{"first_name": "John", "age": 30}}')
+            self.console.onecmd(f'update User {user_id} '\
+            '{{"first_name": "John", "age": 30}}')
             output = f.getvalue().strip()
         self.assertEqual(output, "")
 

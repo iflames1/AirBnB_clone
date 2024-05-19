@@ -4,6 +4,7 @@ import unittest
 from models.place import Place
 from models.engine.file_storage import FileStorage
 
+
 class TestUser(unittest.TestCase):
     def setUp(self):
         self.place = Place()
@@ -21,7 +22,7 @@ class TestUser(unittest.TestCase):
         self.place.amenity_ids = ["id 1", "id 2"]
 
     def tearDown(self):
-        self.storage._FileStorage__object ={}
+        self.storage._FileStorage__object = {}
 
     def test_attributes(self):
         self.assertEqual(self.place.city_id, "city id")
@@ -38,6 +39,7 @@ class TestUser(unittest.TestCase):
         self.assertIsNotNone(self.place.created_at)
         self.assertIsNotNone(self.place.updated_at)
         self.assertIsNotNone(self.place.id)
+
 
 if __name__ == "__main__":
     unittest.main()
