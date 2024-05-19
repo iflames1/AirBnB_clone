@@ -96,6 +96,18 @@ class TestHBNBCommand(unittest.TestCase):
             output = f.getvalue().strip()
         self.assertIn(user_id, output)
 
+    def test_show_v2(self):
+        """Test show command"""
+        # Create a User instance first
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("create User")
+            user_id = f.getvalue().strip()
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd(f"User.show({user_id})")
+            output = f.getvalue().strip()
+        self.assertIn(user_id, output)
+
     def test_show_missing_class(self):
         """Test show command with missing class name"""
         with patch('sys.stdout', new=StringIO()) as f:
@@ -110,6 +122,13 @@ class TestHBNBCommand(unittest.TestCase):
             output = f.getvalue().strip()
         self.assertEqual(output, "** instance id missing **")
 
+    def test_show_missing_id_v2(self):
+        """Test show command with missing instance id"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("User.show()")
+            output = f.getvalue().strip()
+        self.assertEqual(output, "** instance id missing **")
+
     def test_show_invalid_class(self):
         """Test show command with invalid class name"""
         with patch('sys.stdout', new=StringIO()) as f:
@@ -117,10 +136,24 @@ class TestHBNBCommand(unittest.TestCase):
             output = f.getvalue().strip()
         self.assertEqual(output, "** class doesn't exist **")
 
+    def test_show_invalid_class_v2(self):
+        """Test show command with invalid class name"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("NonExistentClass.show(1234)")
+            output = f.getvalue().strip()
+        self.assertEqual(output, "** class doesn't exist **")
+
     def test_show_no_instance(self):
         """Test show command with non-existing instance id"""
         with patch('sys.stdout', new=StringIO()) as f:
             self.console.onecmd("show User 1234")
+            output = f.getvalue().strip()
+        self.assertEqual(output, "** no instance found **")
+
+    def test_show_no_instance_v2(self):
+        """Test show command with non-existing instance id"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("User.show(1234)")
             output = f.getvalue().strip()
         self.assertEqual(output, "** no instance found **")
 
