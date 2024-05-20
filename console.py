@@ -68,6 +68,7 @@ class HBNBCommand(cmd.Cmd):
             "count": self.do_count,
             "show": self.do_show,
             "destroy": self.do_destroy,
+            "update": self.do_update,
             "create": self.do_create
         }
         match = re.match(r"(\w+)\.(\w+)\((.*)\)", line)
@@ -76,33 +77,6 @@ class HBNBCommand(cmd.Cmd):
             if class_name in self.CLASSES and method_name in method_mapping:
                 method = method_mapping[method_name]
                 method(f"{class_name} {args}".strip())
-            elif class_name in self.CLASSES and method_name == "update":
-                update_args = shlex.split(args)
-                inst_id = update_args[0][:-1]
-                if len(update_args) == 3:
-                    attr_name = update_args[1][:-1]
-                    attr_val = update_args[2]
-                    if id == "":
-                        print("** instance id missing **")
-                        return
-
-                    key = f"{class_name}.{inst_id}"
-                    if key not in storage.all():
-                        print("** no instance found **")
-                        return
-
-                    if attr_name == "":
-                        print("** attribute name missing **")
-                        return
-
-                    if attr_val == "":
-                        print("** value missing **")
-                        return
-
-                    obj = storage.all()[key]
-                    setattr(obj, attr_name, attr_val)
-                    obj.save()
-
             else:
                 print("** class doesn't exist **" if class_name not in
                       self.CLASSES else "*** Unknown syntax **")
