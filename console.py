@@ -236,7 +236,7 @@ class HBNBCommand(cmd.Cmd):
         Updates an attribute of an instance of a class in storage.
 
         Usage: update <class name> <id> <attribute name> "<attribute value>"
-            <class name>.update("<id>", "<attribute name>", "<attribute value>")
+        <class name>.update("<id>", "<attribute name>", "<attribute value>")
 
         Parameters:
             arg (str): The name of the class followed by the instance ID,
