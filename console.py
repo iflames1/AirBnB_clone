@@ -237,6 +237,7 @@ class HBNBCommand(cmd.Cmd):
 
         Usage: update <class name> <id> <attribute name> "<attribute value>"
         <class name>.update("<id>", "<attribute name>", "<attribute value>")
+        <class name>.update("<id>", <dictionary representation>)
 
         Parameters:
             arg (str): The name of the class followed by the instance ID,
@@ -278,11 +279,11 @@ class HBNBCommand(cmd.Cmd):
             extracted_dict_str = match.group(0)
             dict_update = eval(extracted_dict_str)
 
-            if len(args) < 3:
-                if args[0] not in self.CLASSES:
-                    print("** class doesn't exist **")
-                elif f"{args[0]}.{obj_id}" not in obj_dict:
-                    print("** no instance found **")
+            if args[0] not in self.CLASSES:
+                print("** class doesn't exist **")
+                return
+            elif f"{args[0]}.{obj_id}" not in obj_dict:
+                print("** no instance found **")
                 return
 
             class_name = args[0]
@@ -315,15 +316,17 @@ class HBNBCommand(cmd.Cmd):
             storage.save()
 
         else:
-            if len(args) < 4:
-                if args[0] not in self.CLASSES:
-                    print("** class doesn't exist **")
-                elif f"{args[0]}.{obj_id}" not in obj_dict:
-                    print("** no instance found **")
-                elif len(args) == 2:
-                    print("** attribute name missing **")
-                elif len(args) == 3:
-                    print("** value missing **")
+            if args[0] not in self.CLASSES:
+                print("** class doesn't exist **")
+                return
+            elif f"{args[0]}.{obj_id}" not in obj_dict:
+                print("** no instance found **")
+                return
+            elif len(args) == 2:
+                print("** attribute name missing **")
+                return
+            elif len(args) == 3:
+                print("** value missing **")
                 return
 
             class_name = args[0]
@@ -341,7 +344,14 @@ class HBNBCommand(cmd.Cmd):
                     return
             else:
                 try:
-                    obj_value = eval(obj_value)
+                    if isinstance(obj_value, str):
+                        obj_value = eval(obj_value)
+                    elif isinstance(obj_value, (int, float, bool)):
+                        pass
+                    elif isinstance(obj_value, (list, dict)):
+                        obj_value = eval(str(obj_value))
+                    else:
+                        print("** invalid value type **")
                 except (NameError, SyntaxError):
                     pass
             setattr(obj, obj_attr, obj_value)

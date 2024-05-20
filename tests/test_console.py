@@ -313,6 +313,22 @@ class TestHBNBCommand(unittest.TestCase):
             output = f.getvalue().strip()
         self.assertIn("'first_name': 'John'", output)
 
+    def test_update_integer(self):
+        """Test update command"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("create User")
+            user_id = f.getvalue().strip()
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd(f'update User {user_id} age 7')
+            output = f.getvalue().strip()
+        self.assertEqual(output, "")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd(f"show User {user_id}")
+            output = f.getvalue().strip()
+        self.assertIn("'age': 7", output)
+
     def test_update_v2(self):
         """Test update command"""
         with patch('sys.stdout', new=StringIO()) as f:
@@ -329,6 +345,23 @@ class TestHBNBCommand(unittest.TestCase):
             self.console.onecmd(f"show User {user_id}")
             output = f.getvalue().strip()
         self.assertIn("'first_name': 'John'", output)
+
+    def test_update_integer_v2(self):
+        """Test update command"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd("create User")
+            user_id = f.getvalue().strip()
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd('User.update("{}", "age", 30)'
+                                .format(user_id))
+            output = f.getvalue().strip()
+        self.assertEqual(output, "")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            self.console.onecmd(f"show User {user_id}")
+            output = f.getvalue().strip()
+        self.assertIn("'age': 30", output)
 
     def test_update_dict(self):
         """Test update command with a dictionary"""
@@ -389,6 +422,7 @@ class TestHBNBCommand(unittest.TestCase):
             output = f.getvalue().strip()
         self.assertEqual(output, "** attribute name missing **")
 
+    """This test was intentional made to fail."""
     def test_update_missing_value(self):
         """Test update command with missing value"""
         # create a User
