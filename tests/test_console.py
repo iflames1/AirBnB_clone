@@ -399,7 +399,7 @@ class TestHBNBCommand(unittest.TestCase):
         with patch('sys.stdout', new=StringIO()) as f:
             self.console.onecmd(f"update User {user_id} first_name")
             output = f.getvalue().strip()
-        self.assertNotEqual(output, "** value missing **")
+        self.assertEqual(output, "** value missing **")
 
 
 if __name__ == "__main__":
