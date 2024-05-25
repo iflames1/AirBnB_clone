@@ -55,7 +55,7 @@
 	background-color: #FAFAFA;
 	border: #DDDDDD solid 1px;
 	list-style-type: none;
-	width: calc(100% - 60px);
+	width: 100% - 60px;
 	position: absolute;
 	top: calc(100% - 16px);
 	left: 0;
