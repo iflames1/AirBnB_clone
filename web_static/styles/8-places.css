@@ -13,13 +13,13 @@
 }
 
 .price_by_night {
-	font-size: 30px;
+	font-size: 20px;
 	font-weight: bold;
 	color: #ff5a5f;
 	border: #FF5A5F solid 4px;
 	border-radius: 50%;
-	width: 80px;
-	height: 80px;
+	width: 60px;
+	height: 60px;
 	display: flex;
 	margin: 4px;
 	justify-content: center;
@@ -32,7 +32,7 @@
 }
 
 hr {
-	margin-top: 50px;
+	margin-top: 30px;
 }
 
 .places div {
@@ -48,7 +48,7 @@ hr {
 }
 
 .information {
-	gap: 50px;
+	gap: 40px;
 	margin-bottom: 15px;
 }
 
