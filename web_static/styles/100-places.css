@@ -16,7 +16,7 @@
 	font-size: 20px;
 	font-weight: bold;
 	color: #ff5a5f;
-	border: #FF5A5F solid 4px;
+	border: #FF5A5F solid 3px;
 	border-radius: 50%;
 	width: 60px;
 	height: 60px;
@@ -42,13 +42,14 @@ hr {
 
 .places h2 {
 	font-size: 30px;
-	text-align: center;
 	margin: 0;
 }
 
 .information {
 	gap: 40px;
 	margin-bottom: 15px;
+	padding-bottom: 5px;
+	border-bottom: #DDDDDD solid 1px;
 }
 
 .information div {
@@ -97,4 +98,34 @@ hr {
 
 .description {
 	margin-top: 25px;
+}
+
+.amenities, .reviews {
+	margin-top: 40px;
+	display: flex;
+	flex-direction: column;
+}
+
+.amenities h2, .reviews h2 {
+	font-size: 16px;
+	border-bottom: #DDDDDD solid 1px;
+}
+
+.amenities ul, .reviews ul {
+	padding: 0;
+}
+
+.amenities li, .reviews li {
+	list-style-type: none;
+	margin: 0;
+}
+
+.reviews h3 {
+	font-size: 14px;
+	margin: 0;
+}
+
+.reviews p {
+	font-size: 12px;
+	margin: 0;
 }
