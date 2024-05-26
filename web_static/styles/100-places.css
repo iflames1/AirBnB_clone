@@ -134,7 +134,7 @@ hr {
 	margin-top: 25px;
 }
 
-.amenities, .reviews {
+article>.amenities, .reviews {
 	margin-top: 40px;
 	display: flex;
 	flex-direction: column;
